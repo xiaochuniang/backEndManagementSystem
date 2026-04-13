@@ -148,7 +148,7 @@ onMounted(() => {
         <el-table-column prop="sort" label="排序" width="80" />
         <el-table-column prop="type" label="类型" width="80">
           <template #default="{ row }">
-            <el-tag :type="row.type === 1 ? '' : 'warning'">
+            <el-tag :type="row.type === 1 ? 'primary' : 'warning'">
               {{ row.type === 1 ? '菜单' : '按钮' }}
             </el-tag>
           </template>
