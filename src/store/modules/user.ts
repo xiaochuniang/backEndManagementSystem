@@ -3,6 +3,7 @@ import { loginApi, getUserInfoApi, logoutApi } from '@/api/auth'
 import { setToken, getToken, removeToken } from '@/utils/storage'
 import type { LoginParams, MenuItem } from '@/types/api'
 import type { UserState } from '@/types/store'
+import { useAppStore } from '@/store/modules/app'
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
@@ -22,6 +23,8 @@ export const useUserStore = defineStore('user', {
     async login(params: LoginParams) {
       const data = await loginApi(params)
       this.token = data.token
+      const appStore = useAppStore()
+      appStore.clearVisitedViews()
       setToken(data.token)
     },
 
@@ -51,6 +54,8 @@ export const useUserStore = defineStore('user', {
       this.userInfo = null
       this.permissions = []
       this.menus = []
+      const appStore = useAppStore()
+      appStore.clearVisitedViews()
       removeToken()
     },
 
