@@ -1,4 +1,3 @@
-import type { Plugin } from 'vite'
 import type { IncomingMessage, ServerResponse } from 'http'
 import { parseRequestBody, success, fail } from './utils'
 
@@ -200,14 +199,10 @@ const editorMenus = [
   },
 ]
 
-let tokenStore: Record<string, MockUser> = {}
+const tokenStore: Record<string, MockUser> = {}
 users.forEach((u) => {
   tokenStore[u.token] = u
 })
-
-export function authMockRoutes(app: ReturnType<Plugin['configureServer']> extends ((s: infer S) => void) ? S : never) {
-  // This is called from mock/index.ts
-}
 
 export function handleAuthMock(
   url: string,

@@ -1,4 +1,6 @@
 import type { Plugin } from 'vite'
+import type { IncomingMessage, ServerResponse } from 'http'
+import type { Connect } from 'vite'
 import { handleAuthMock } from './auth'
 import { handleUserMock } from './user'
 import { handleRoleMock } from './role'
@@ -8,7 +10,7 @@ export function viteMockPlugin(): Plugin {
   return {
     name: 'vite-mock-plugin',
     configureServer(server) {
-      server.middlewares.use((req, res, next) => {
+      server.middlewares.use(((req: IncomingMessage, res: ServerResponse, next: Connect.NextFunction) => {
         const url = req.url || ''
         const method = (req.method || 'GET').toUpperCase()
 
@@ -26,7 +28,7 @@ export function viteMockPlugin(): Plugin {
 
           next()
         }, 200)
-      })
+      }) as Connect.NextHandleFunction)
     },
   }
 }

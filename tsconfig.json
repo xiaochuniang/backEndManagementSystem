@@ -19,7 +19,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client", "node"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/env.d.ts", "mock/**/*.ts"],
   "exclude": ["node_modules", "dist"]
