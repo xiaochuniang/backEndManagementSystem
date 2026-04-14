@@ -76,7 +76,7 @@ export function generateRoutes(menus: MenuItem[]): RouteRecordRaw[] {
   return routes
 }
 
-function resolveComponent(component: string): (() => Promise<unknown>) {
+function resolveComponent(component: string): () => Promise<unknown> {
   const path = `../views/${component.replace(/^views\//, '')}.vue`
   if (viewModules[path]) {
     return viewModules[path] as () => Promise<unknown>
@@ -91,7 +91,9 @@ export function resetRouter(): void {
     routes: constantRoutes,
   })
   // Reset matcher
-  ;(router as unknown as { matcher: unknown }).matcher = (newRouter as unknown as { matcher: unknown }).matcher
+  ;(router as unknown as { matcher: unknown }).matcher = (
+    newRouter as unknown as { matcher: unknown }
+  ).matcher
 }
 
 export function addDynamicRoutes(menus: MenuItem[]): RouteRecordRaw[] {

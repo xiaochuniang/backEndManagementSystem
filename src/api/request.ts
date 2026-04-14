@@ -1,5 +1,10 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+} from 'axios'
 import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/storage'
 import type { ApiResponse } from '@/types/api'
@@ -7,7 +12,12 @@ import type { ApiResponse } from '@/types/api'
 const pendingMap = new Map<string, AbortController>()
 
 function getRequestKey(config: AxiosRequestConfig): string {
-  return [config.method, config.url, JSON.stringify(config.params), JSON.stringify(config.data)].join('&')
+  return [
+    config.method,
+    config.url,
+    JSON.stringify(config.params),
+    JSON.stringify(config.data),
+  ].join('&')
 }
 
 function addPending(config: InternalAxiosRequestConfig): void {

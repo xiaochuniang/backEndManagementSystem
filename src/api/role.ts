@@ -1,7 +1,9 @@
 import { request } from './request'
 import type { PageParams, PageResult, RoleRecord, RoleFormData } from '@/types/api'
 
-export function getRoleListApi(params: PageParams & { name?: string }): Promise<PageResult<RoleRecord>> {
+export function getRoleListApi(
+  params: PageParams & { name?: string },
+): Promise<PageResult<RoleRecord>> {
   return request<PageResult<RoleRecord>>({ url: '/role/list', method: 'get', params })
 }
 

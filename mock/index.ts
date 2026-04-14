@@ -10,7 +10,11 @@ export function viteMockPlugin(): Plugin {
   return {
     name: 'vite-mock-plugin',
     configureServer(server) {
-      server.middlewares.use(((req: IncomingMessage, res: ServerResponse, next: Connect.NextFunction) => {
+      server.middlewares.use(((
+        req: IncomingMessage,
+        res: ServerResponse,
+        next: Connect.NextFunction,
+      ) => {
         const url = req.url || ''
         const method = (req.method || 'GET').toUpperCase()
 

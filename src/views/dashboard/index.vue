@@ -48,9 +48,7 @@ const stats = ref<StatCard[]>([
             您好，<strong>{{ userStore.username }}</strong
             >！欢迎使用 Vue3 Admin 后台管理系统。
           </p>
-          <p style="margin-top: 12px; color: #909399">
-            当前角色：{{ userStore.roles.join(', ') }}
-          </p>
+          <p style="margin-top: 12px; color: #909399">当前角色：{{ userStore.roles.join(', ') }}</p>
         </el-card>
       </el-col>
     </el-row>
@@ -61,7 +59,18 @@ const stats = ref<StatCard[]>([
           <template #header>
             <span>技术栈</span>
           </template>
-          <el-tag v-for="tag in ['Vue 3.4', 'TypeScript', 'Vite', 'Element Plus', 'Pinia', 'Vue Router 4']" :key="tag" style="margin: 4px">
+          <el-tag
+            v-for="tag in [
+              'Vue 3.4',
+              'TypeScript',
+              'Vite',
+              'Element Plus',
+              'Pinia',
+              'Vue Router 4',
+            ]"
+            :key="tag"
+            style="margin: 4px"
+          >
             {{ tag }}
           </el-tag>
         </el-card>

@@ -227,7 +227,7 @@ export function handleAuthMock(
 }
 
 async function handleLogin(req: IncomingMessage, res: ServerResponse) {
-  const body = await parseRequestBody(req) as { username?: string; password?: string }
+  const body = (await parseRequestBody(req)) as { username?: string; password?: string }
   const user = users.find((u) => u.username === body.username && u.password === body.password)
   res.setHeader('Content-Type', 'application/json')
   if (user) {

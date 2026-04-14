@@ -241,7 +241,12 @@ onMounted(() => {
           <el-input v-model="formData.phone" />
         </el-form-item>
         <el-form-item label="角色">
-          <el-select v-model="formData.roleIds" multiple placeholder="请选择角色" style="width: 100%">
+          <el-select
+            v-model="formData.roleIds"
+            multiple
+            placeholder="请选择角色"
+            style="width: 100%"
+          >
             <el-option
               v-for="role in allRoles"
               :key="role.id"

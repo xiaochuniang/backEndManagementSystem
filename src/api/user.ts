@@ -1,7 +1,9 @@
 import { request } from './request'
 import type { PageParams, PageResult, UserRecord, UserFormData } from '@/types/api'
 
-export function getUserListApi(params: PageParams & { username?: string }): Promise<PageResult<UserRecord>> {
+export function getUserListApi(
+  params: PageParams & { username?: string },
+): Promise<PageResult<UserRecord>> {
   return request<PageResult<UserRecord>>({ url: '/user/list', method: 'get', params })
 }
 

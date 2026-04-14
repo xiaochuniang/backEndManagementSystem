@@ -5,7 +5,7 @@ import { debounce, throttle } from 'lodash-es'
  */
 export function useDebounce<T extends (...args: unknown[]) => unknown>(
   fn: T,
-  wait: number = 300
+  wait: number = 300,
 ): (...args: Parameters<T>) => void {
   return debounce(fn, wait)
 }
@@ -15,7 +15,7 @@ export function useDebounce<T extends (...args: unknown[]) => unknown>(
  */
 export function useThrottle<T extends (...args: unknown[]) => unknown>(
   fn: T,
-  wait: number = 300
+  wait: number = 300,
 ): (...args: Parameters<T>) => void {
   return throttle(fn, wait)
 }
