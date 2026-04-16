@@ -1,0 +1,17 @@
+{
+  "name": "门店会员储值小程序",
+  "appid": "__UNI__POS_DEMO__",
+  "description": "门店收银+会员储值小程序骨架",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "h5": {
+    "title": "门店会员储值小程序"
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false
+    }
+  }
+}

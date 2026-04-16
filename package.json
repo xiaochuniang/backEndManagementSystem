@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:admin": "vite",
+    "dev:miniapp": "pnpm --filter miniapp-uni dev:h5",
     "build": "vue-tsc -b && vite build",
+    "build:admin": "vue-tsc -b && vite build",
+    "build:miniapp": "pnpm --filter miniapp-uni build:h5",
     "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.js,.jsx,.ts,.tsx --fix",
+    "lint": "eslint src mock --ext .vue,.js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{js,ts,vue,scss,css,json}\""
   },
   "dependencies": {

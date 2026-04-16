@@ -17,6 +17,14 @@ export const useUserStore = defineStore('user', {
     isLoggedIn: (state): boolean => !!state.token,
     username: (state): string => state.userInfo?.nickname || '',
     roles: (state): string[] => state.userInfo?.roles || [],
+    homePath: (state): string => {
+      const firstMenu = state.menus[0]
+      if (!firstMenu) return '/login'
+      if (firstMenu.children && firstMenu.children.length > 0) {
+        return firstMenu.redirect || firstMenu.children[0].path
+      }
+      return firstMenu.path
+    },
   },
 
   actions: {

@@ -19,7 +19,7 @@ export function setupRouterGuard(router: Router): void {
 
     if (userStore.token) {
       if (to.path === '/login') {
-        next({ path: '/dashboard' })
+        next({ path: userStore.userInfo ? userStore.homePath : '/' })
         NProgress.done()
         return
       }
@@ -61,7 +61,7 @@ export function setupRouterGuard(router: Router): void {
         name: to.name as string,
         title: (to.meta.title as string) || '',
         icon: to.meta.icon as string,
-        affix: to.path === '/dashboard',
+        affix: to.path.endsWith('/dashboard'),
       })
     }
   })
