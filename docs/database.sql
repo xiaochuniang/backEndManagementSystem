@@ -437,6 +437,27 @@ CREATE TABLE IF NOT EXISTS recon_record (
 
 
 -- ===========================================================
+-- 十、短信验证码表（用于登录找回密码 / 手机号验证）
+-- ===========================================================
+
+-- -------------------------------------------------------------
+-- 25. 短信验证码表
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS sms_verify_code (
+  id           BIGINT       UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+  phone        VARCHAR(20)  NOT NULL                        COMMENT '手机号',
+  code         VARCHAR(10)  NOT NULL                        COMMENT '验证码',
+  scene        VARCHAR(32)  NOT NULL DEFAULT 'login'        COMMENT '使用场景：login=登录  forgot_pwd=找回密码  member_verify=会员核销',
+  used         TINYINT(1)   NOT NULL DEFAULT 0              COMMENT '是否已使用：0=未使用  1=已使用',
+  expire_time  DATETIME     NOT NULL                        COMMENT '过期时间（通常为发送时间 + 5 分钟）',
+  create_time  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发送时间',
+  PRIMARY KEY (id),
+  KEY idx_phone_scene (phone, scene),
+  KEY idx_expire_time (expire_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短信验证码表';
+
+
+-- ===========================================================
 -- 初始化基础数据
 -- ===========================================================
 
