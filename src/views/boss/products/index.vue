@@ -26,10 +26,42 @@ const categories = ref<Category[]>([
 ])
 
 const products = ref<Product[]>([
-  { id: 1, name: '珍珠奶茶', categoryId: 1, price: 18, stock: 100, barcode: '6901001000001', imageUrl: '' },
-  { id: 2, name: '芝士蛋糕', categoryId: 2, price: 28, stock: 50, barcode: '6901001000002', imageUrl: '' },
-  { id: 3, name: '下午茶套餐', categoryId: 3, price: 45, stock: 30, barcode: '6901001000003', imageUrl: '' },
-  { id: 4, name: '美式咖啡', categoryId: 1, price: 22, stock: 80, barcode: '6901001000004', imageUrl: '' },
+  {
+    id: 1,
+    name: '珍珠奶茶',
+    categoryId: 1,
+    price: 18,
+    stock: 100,
+    barcode: '6901001000001',
+    imageUrl: '',
+  },
+  {
+    id: 2,
+    name: '芝士蛋糕',
+    categoryId: 2,
+    price: 28,
+    stock: 50,
+    barcode: '6901001000002',
+    imageUrl: '',
+  },
+  {
+    id: 3,
+    name: '下午茶套餐',
+    categoryId: 3,
+    price: 45,
+    stock: 30,
+    barcode: '6901001000003',
+    imageUrl: '',
+  },
+  {
+    id: 4,
+    name: '美式咖啡',
+    categoryId: 1,
+    price: 22,
+    stock: 80,
+    barcode: '6901001000004',
+    imageUrl: '',
+  },
 ])
 
 const activeTab = ref('products')
@@ -68,7 +100,15 @@ const prodRules = {
 
 function openAddProduct() {
   prodDialogTitle.value = '添加商品'
-  Object.assign(prodForm, { id: undefined, name: '', categoryId: categories.value[0]?.id ?? 1, price: 0, stock: 0, barcode: '', imageUrl: '' })
+  Object.assign(prodForm, {
+    id: undefined,
+    name: '',
+    categoryId: categories.value[0]?.id ?? 1,
+    price: 0,
+    stock: 0,
+    barcode: '',
+    imageUrl: '',
+  })
   prodDialogVisible.value = true
 }
 function openEditProduct(row: Product) {
@@ -137,10 +177,15 @@ async function deleteCat(row: Category) {
         <div class="toolbar">
           <el-form inline>
             <el-form-item label="商品名称">
-              <el-input v-model="searchName" placeholder="请输入商品名称" clearable :prefix-icon="Search" />
+              <el-input
+                v-model="searchName"
+                placeholder="请输入商品名称"
+                clearable
+                :prefix-icon="Search"
+              />
             </el-form-item>
             <el-form-item label="分类">
-              <el-select v-model="filterCategory" placeholder="全部" clearable style="width:120px">
+              <el-select v-model="filterCategory" placeholder="全部" clearable style="width: 120px">
                 <el-option v-for="c in categories" :key="c.id" :label="c.name" :value="c.id" />
               </el-select>
             </el-form-item>
@@ -162,7 +207,9 @@ async function deleteCat(row: Category) {
           <el-table-column label="操作" width="140" fixed="right">
             <template #default="{ row }">
               <el-button size="small" :icon="Edit" @click="openEditProduct(row)">编辑</el-button>
-              <el-button size="small" type="danger" :icon="Delete" @click="deleteProd(row)">删除</el-button>
+              <el-button size="small" type="danger" :icon="Delete" @click="deleteProd(row)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -179,7 +226,9 @@ async function deleteCat(row: Category) {
           <el-table-column label="操作" width="140" fixed="right">
             <template #default="{ row }">
               <el-button size="small" :icon="Edit" @click="openEditCat(row)">编辑</el-button>
-              <el-button size="small" type="danger" :icon="Delete" @click="deleteCat(row)">删除</el-button>
+              <el-button size="small" type="danger" :icon="Delete" @click="deleteCat(row)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -193,15 +242,15 @@ async function deleteCat(row: Category) {
           <el-input v-model="prodForm.name" placeholder="请输入商品名称" />
         </el-form-item>
         <el-form-item label="分类" prop="categoryId">
-          <el-select v-model="prodForm.categoryId" placeholder="请选择分类" style="width:100%">
+          <el-select v-model="prodForm.categoryId" placeholder="请选择分类" style="width: 100%">
             <el-option v-for="c in categories" :key="c.id" :label="c.name" :value="c.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="单价(元)" prop="price">
-          <el-input-number v-model="prodForm.price" :min="0" :precision="2" style="width:100%" />
+          <el-input-number v-model="prodForm.price" :min="0" :precision="2" style="width: 100%" />
         </el-form-item>
         <el-form-item label="库存">
-          <el-input-number v-model="prodForm.stock" :min="0" style="width:100%" />
+          <el-input-number v-model="prodForm.stock" :min="0" style="width: 100%" />
         </el-form-item>
         <el-form-item label="条码">
           <el-input v-model="prodForm.barcode" placeholder="请输入商品条码" />
@@ -225,7 +274,7 @@ async function deleteCat(row: Category) {
           <el-input v-model="catForm.name" placeholder="请输入分类名称" />
         </el-form-item>
         <el-form-item label="排序">
-          <el-input-number v-model="catForm.sort" :min="1" style="width:100%" />
+          <el-input-number v-model="catForm.sort" :min="1" style="width: 100%" />
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="catForm.remark" type="textarea" :rows="2" />
@@ -240,5 +289,7 @@ async function deleteCat(row: Category) {
 </template>
 
 <style scoped>
-.toolbar { margin-bottom: 12px; }
+.toolbar {
+  margin-bottom: 12px;
+}
 </style>

@@ -15,8 +15,24 @@ interface ShiftRecord {
 const activeTab = ref('records')
 
 const shiftRecords = ref<ShiftRecord[]>([
-  { id: 1, staffName: '张员工', startTime: '2026-04-16 08:00', endTime: '2026-04-16 14:00', revenue: 3640, orderCount: 62, remark: '' },
-  { id: 2, staffName: '李员工', startTime: '2026-04-16 14:00', endTime: '2026-04-16 20:00', revenue: 4980, orderCount: 81, remark: '无异常' },
+  {
+    id: 1,
+    staffName: '张员工',
+    startTime: '2026-04-16 08:00',
+    endTime: '2026-04-16 14:00',
+    revenue: 3640,
+    orderCount: 62,
+    remark: '',
+  },
+  {
+    id: 2,
+    staffName: '李员工',
+    startTime: '2026-04-16 14:00',
+    endTime: '2026-04-16 20:00',
+    revenue: 4980,
+    orderCount: 81,
+    remark: '无异常',
+  },
 ])
 
 const reconFilter = reactive({ date: '' })
@@ -51,26 +67,35 @@ const reconDetails = ref([
       </el-tab-pane>
 
       <el-tab-pane label="营收对账" name="recon">
-        <el-form inline style="margin-bottom:12px">
+        <el-form inline style="margin-bottom: 12px">
           <el-form-item label="日期">
-            <el-date-picker v-model="reconFilter.date" type="date" placeholder="选择日期" style="width:160px" />
+            <el-date-picker
+              v-model="reconFilter.date"
+              type="date"
+              placeholder="选择日期"
+              style="width: 160px"
+            />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" :icon="Search">查询</el-button>
           </el-form-item>
         </el-form>
 
-        <el-row :gutter="16" style="margin-bottom:16px">
+        <el-row :gutter="16" style="margin-bottom: 16px">
           <el-col :span="8">
             <el-card shadow="hover" class="recon-card">
               <div class="recon-label">系统实收</div>
-              <div class="recon-value blue">￥{{ reconSummary.systemRevenue.toLocaleString() }}</div>
+              <div class="recon-value blue">
+                ￥{{ reconSummary.systemRevenue.toLocaleString() }}
+              </div>
             </el-card>
           </el-col>
           <el-col :span="8">
             <el-card shadow="hover" class="recon-card">
               <div class="recon-label">实际营收</div>
-              <div class="recon-value green">￥{{ reconSummary.actualRevenue.toLocaleString() }}</div>
+              <div class="recon-value green">
+                ￥{{ reconSummary.actualRevenue.toLocaleString() }}
+              </div>
             </el-card>
           </el-col>
           <el-col :span="8">
@@ -93,7 +118,7 @@ const reconDetails = ref([
           </el-table-column>
           <el-table-column label="差异" width="90">
             <template #default="{ row }">
-              <span :style="{color: row.diff===0?'#67c23a':'#f56c6c'}">{{ row.diff }}</span>
+              <span :style="{ color: row.diff === 0 ? '#67c23a' : '#f56c6c' }">{{ row.diff }}</span>
             </template>
           </el-table-column>
           <el-table-column label="说明" prop="remark" />
@@ -104,10 +129,26 @@ const reconDetails = ref([
 </template>
 
 <style scoped>
-.recon-card { text-align: center; padding: 8px 0; }
-.recon-label { font-size: 13px; color: #909399; margin-bottom: 6px; }
-.recon-value { font-size: 24px; font-weight: 700; }
-.blue { color: #409eff; }
-.green { color: #67c23a; }
-.red { color: #f56c6c; }
+.recon-card {
+  text-align: center;
+  padding: 8px 0;
+}
+.recon-label {
+  font-size: 13px;
+  color: #909399;
+  margin-bottom: 6px;
+}
+.recon-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+.blue {
+  color: #409eff;
+}
+.green {
+  color: #67c23a;
+}
+.red {
+  color: #f56c6c;
+}
 </style>

@@ -31,14 +31,12 @@ const maxAmount = computed(() => Math.max(...trendData.map((d) => d.amount)))
 const points = computed(() => {
   return trendData.map((d, i) => {
     const x = padLeft + (i * (svgWidth - padLeft - padRight)) / (trendData.length - 1)
-    const y = padTop + ((1 - d.amount / maxAmount.value) * (svgHeight - padTop - padBottom))
+    const y = padTop + (1 - d.amount / maxAmount.value) * (svgHeight - padTop - padBottom)
     return { x, y, day: d.day, amount: d.amount }
   })
 })
 
-const polylinePoints = computed(() =>
-  points.value.map((p) => `${p.x},${p.y}`).join(' ')
-)
+const polylinePoints = computed(() => points.value.map((p) => `${p.x},${p.y}`).join(' '))
 
 const areaPoints = computed(() => {
   const base = svgHeight - padBottom
@@ -47,9 +45,7 @@ const areaPoints = computed(() => {
   return `${first.x},${base} ${polylinePoints.value} ${last.x},${base}`
 })
 
-const yAxisPositions = [0, 1, 2, 3].map(
-  (i) => padTop + i * (svgHeight - padTop - padBottom) / 3
-)
+const yAxisPositions = [0, 1, 2, 3].map((i) => padTop + (i * (svgHeight - padTop - padBottom)) / 3)
 </script>
 
 <template>
@@ -60,45 +56,92 @@ const yAxisPositions = [0, 1, 2, 3].map(
           <div class="stat-inner">
             <div>
               <div class="stat-label">{{ s.label }}</div>
-              <div class="stat-val" :style="{ color: s.color }">{{ s.prefix }}{{ s.value.toLocaleString() }}</div>
+              <div class="stat-val" :style="{ color: s.color }">
+                {{ s.prefix }}{{ s.value.toLocaleString() }}
+              </div>
             </div>
-            <el-icon :size="40" :color="s.color" style="opacity:0.6"><component :is="s.icon" /></el-icon>
+            <el-icon :size="40" :color="s.color" style="opacity: 0.6"
+              ><component :is="s.icon"
+            /></el-icon>
           </div>
         </el-card>
       </el-col>
     </el-row>
 
-    <el-card shadow="hover" style="margin-top:16px">
+    <el-card shadow="hover" style="margin-top: 16px">
       <template #header><span>近7天营收趋势</span></template>
-      <svg :width="svgWidth" :height="svgHeight" style="display:block;margin:0 auto">
+      <svg :width="svgWidth" :height="svgHeight" style="display: block; margin: 0 auto">
         <!-- Y axis lines -->
-        <line v-for="(yPos, idx) in yAxisPositions" :key="idx"
-          :x1="padLeft" :y1="yPos"
-          :x2="svgWidth - padRight" :y2="yPos"
-          stroke="#eee" stroke-width="1" />
+        <line
+          v-for="(yPos, idx) in yAxisPositions"
+          :key="idx"
+          :x1="padLeft"
+          :y1="yPos"
+          :x2="svgWidth - padRight"
+          :y2="yPos"
+          stroke="#eee"
+          stroke-width="1"
+        />
         <!-- Area fill -->
         <polygon :points="areaPoints" fill="#409eff" fill-opacity="0.1" />
         <!-- Trend line -->
-        <polyline :points="polylinePoints" fill="none" stroke="#409eff" stroke-width="2" stroke-linejoin="round" />
+        <polyline
+          :points="polylinePoints"
+          fill="none"
+          stroke="#409eff"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
         <!-- Data points -->
         <circle v-for="p in points" :key="p.day" :cx="p.x" :cy="p.y" r="4" fill="#409eff" />
         <!-- X labels -->
-        <text v-for="p in points" :key="'l'+p.day"
-          :x="p.x" :y="svgHeight - 8"
-          text-anchor="middle" font-size="11" fill="#909399">{{ p.day }}</text>
+        <text
+          v-for="p in points"
+          :key="'l' + p.day"
+          :x="p.x"
+          :y="svgHeight - 8"
+          text-anchor="middle"
+          font-size="11"
+          fill="#909399"
+        >
+          {{ p.day }}
+        </text>
         <!-- Y label -->
-        <text v-for="p in [points[0], points[points.length - 1]]" :key="'v'+p.day"
-          :x="p.x" :y="p.y - 8"
-          text-anchor="middle" font-size="10" fill="#606266">￥{{ p.amount }}</text>
+        <text
+          v-for="p in [points[0], points[points.length - 1]]"
+          :key="'v' + p.day"
+          :x="p.x"
+          :y="p.y - 8"
+          text-anchor="middle"
+          font-size="10"
+          fill="#606266"
+        >
+          ￥{{ p.amount }}
+        </text>
       </svg>
     </el-card>
   </div>
 </template>
 
 <style scoped>
-.stat-row { margin-bottom: 0; }
-.stat-card { margin-bottom: 0; }
-.stat-inner { display: flex; align-items: center; justify-content: space-between; }
-.stat-label { font-size: 13px; color: #909399; margin-bottom: 8px; }
-.stat-val { font-size: 26px; font-weight: 700; }
+.stat-row {
+  margin-bottom: 0;
+}
+.stat-card {
+  margin-bottom: 0;
+}
+.stat-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stat-label {
+  font-size: 13px;
+  color: #909399;
+  margin-bottom: 8px;
+}
+.stat-val {
+  font-size: 26px;
+  font-weight: 700;
+}
 </style>

@@ -19,10 +19,49 @@ interface Order {
 }
 
 const allOrders = ref<Order[]>([
-  { id: '1', orderNo: 'SO20260416001', amount: 64, payMethod: '微信支付', createTime: '2026-04-16 09:23', staffName: '张员工', status: '已完成', items: [{ name: '珍珠奶茶', qty: 2, price: 18 }, { name: '芝士蛋糕', qty: 1, price: 28 }] },
-  { id: '2', orderNo: 'SO20260416002', amount: 45, payMethod: '支付宝', createTime: '2026-04-16 10:05', staffName: '李员工', status: '已完成', items: [{ name: '下午茶套餐', qty: 1, price: 45 }] },
-  { id: '3', orderNo: 'SO20260416003', amount: 22, payMethod: '现金', createTime: '2026-04-16 10:44', staffName: '张员工', status: '已退款', items: [{ name: '美式咖啡', qty: 1, price: 22 }] },
-  { id: '4', orderNo: 'SO20260416004', amount: 36, payMethod: '会员余额', createTime: '2026-04-16 11:30', staffName: '王员工', status: '已完成', items: [{ name: '珍珠奶茶', qty: 2, price: 18 }] },
+  {
+    id: '1',
+    orderNo: 'SO20260416001',
+    amount: 64,
+    payMethod: '微信支付',
+    createTime: '2026-04-16 09:23',
+    staffName: '张员工',
+    status: '已完成',
+    items: [
+      { name: '珍珠奶茶', qty: 2, price: 18 },
+      { name: '芝士蛋糕', qty: 1, price: 28 },
+    ],
+  },
+  {
+    id: '2',
+    orderNo: 'SO20260416002',
+    amount: 45,
+    payMethod: '支付宝',
+    createTime: '2026-04-16 10:05',
+    staffName: '李员工',
+    status: '已完成',
+    items: [{ name: '下午茶套餐', qty: 1, price: 45 }],
+  },
+  {
+    id: '3',
+    orderNo: 'SO20260416003',
+    amount: 22,
+    payMethod: '现金',
+    createTime: '2026-04-16 10:44',
+    staffName: '张员工',
+    status: '已退款',
+    items: [{ name: '美式咖啡', qty: 1, price: 22 }],
+  },
+  {
+    id: '4',
+    orderNo: 'SO20260416004',
+    amount: 36,
+    payMethod: '会员余额',
+    createTime: '2026-04-16 11:30',
+    staffName: '王员工',
+    status: '已完成',
+    items: [{ name: '珍珠奶茶', qty: 2, price: 18 }],
+  },
 ])
 
 const filter = reactive({ dateRange: [] as string[], payMethod: '', status: '' })
@@ -60,19 +99,25 @@ function resetFilter() {
 
 <template>
   <div class="page">
-    <el-card shadow="never" style="margin-bottom:16px">
+    <el-card shadow="never" style="margin-bottom: 16px">
       <el-form inline>
         <el-form-item label="日期范围">
-          <el-date-picker v-model="filter.dateRange" type="daterange" range-separator="至"
-            start-placeholder="开始日期" end-placeholder="结束日期" style="width:240px" />
+          <el-date-picker
+            v-model="filter.dateRange"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            style="width: 240px"
+          />
         </el-form-item>
         <el-form-item label="支付方式">
-          <el-select v-model="filter.payMethod" placeholder="全部" clearable style="width:120px">
+          <el-select v-model="filter.payMethod" placeholder="全部" clearable style="width: 120px">
             <el-option v-for="m in filterPayMethod" :key="m" :label="m" :value="m" />
           </el-select>
         </el-form-item>
         <el-form-item label="订单状态">
-          <el-select v-model="filter.status" placeholder="全部" clearable style="width:120px">
+          <el-select v-model="filter.status" placeholder="全部" clearable style="width: 120px">
             <el-option v-for="s in filterStatus" :key="s" :label="s" :value="s" />
           </el-select>
         </el-form-item>
@@ -105,17 +150,21 @@ function resetFilter() {
 
     <el-drawer v-model="drawerVisible" title="订单详情" size="480px" direction="rtl">
       <template v-if="currentOrder">
-        <el-descriptions :column="2" border style="margin-bottom:16px">
+        <el-descriptions :column="2" border style="margin-bottom: 16px">
           <el-descriptions-item label="订单号">{{ currentOrder.orderNo }}</el-descriptions-item>
           <el-descriptions-item label="状态">
             <el-tag :type="statusType(currentOrder.status)">{{ currentOrder.status }}</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="消费时间">{{ currentOrder.createTime }}</el-descriptions-item>
+          <el-descriptions-item label="消费时间">{{
+            currentOrder.createTime
+          }}</el-descriptions-item>
           <el-descriptions-item label="支付方式">{{ currentOrder.payMethod }}</el-descriptions-item>
           <el-descriptions-item label="员工">{{ currentOrder.staffName }}</el-descriptions-item>
-          <el-descriptions-item label="总金额">￥{{ currentOrder.amount.toFixed(2) }}</el-descriptions-item>
+          <el-descriptions-item label="总金额"
+            >￥{{ currentOrder.amount.toFixed(2) }}</el-descriptions-item
+          >
         </el-descriptions>
-        <div style="font-weight:600;margin-bottom:8px">订单商品</div>
+        <div style="font-weight: 600; margin-bottom: 8px">订单商品</div>
         <el-table :data="currentOrder.items" border size="small">
           <el-table-column label="商品" prop="name" />
           <el-table-column label="单价" width="80">

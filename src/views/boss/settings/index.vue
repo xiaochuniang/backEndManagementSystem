@@ -33,9 +33,15 @@ const pwdForm = reactive({
 })
 const pwdFormRef = ref()
 
-function saveShop() { ElMessage.success('店铺信息保存成功') }
-function savePay() { ElMessage.success('支付设置保存成功') }
-function saveReceipt() { ElMessage.success('小票设置保存成功') }
+function saveShop() {
+  ElMessage.success('店铺信息保存成功')
+}
+function savePay() {
+  ElMessage.success('支付设置保存成功')
+}
+function saveReceipt() {
+  ElMessage.success('小票设置保存成功')
+}
 async function savePwd() {
   if (!pwdForm.oldPwd || !pwdForm.newPwd) return ElMessage.warning('请填写完整')
   if (pwdForm.newPwd !== pwdForm.confirmPwd) return ElMessage.error('两次密码不一致')
@@ -50,7 +56,7 @@ async function savePwd() {
   <div class="page">
     <el-tabs v-model="activeTab">
       <el-tab-pane label="店铺信息" name="shop">
-        <el-form :model="shopForm" label-width="100px" style="max-width:600px">
+        <el-form :model="shopForm" label-width="100px" style="max-width: 600px">
           <el-form-item label="店铺名称">
             <el-input v-model="shopForm.name" />
           </el-form-item>
@@ -75,7 +81,7 @@ async function savePwd() {
       </el-tab-pane>
 
       <el-tab-pane label="支付设置" name="pay">
-        <el-card shadow="never" header="微信支付" style="max-width:600px;margin-bottom:16px">
+        <el-card shadow="never" header="微信支付" style="max-width: 600px; margin-bottom: 16px">
           <el-form :model="payForm" label-width="110px">
             <el-form-item label="微信AppID">
               <el-input v-model="payForm.wxAppId" />
@@ -88,7 +94,7 @@ async function savePwd() {
             </el-form-item>
           </el-form>
         </el-card>
-        <el-card shadow="never" header="支付宝" style="max-width:600px;margin-bottom:16px">
+        <el-card shadow="never" header="支付宝" style="max-width: 600px; margin-bottom: 16px">
           <el-form :model="payForm" label-width="110px">
             <el-form-item label="支付宝AppID">
               <el-input v-model="payForm.aliAppId" />
@@ -102,7 +108,7 @@ async function savePwd() {
       </el-tab-pane>
 
       <el-tab-pane label="小票设置" name="receipt">
-        <el-form :model="receiptForm" label-width="100px" style="max-width:500px">
+        <el-form :model="receiptForm" label-width="100px" style="max-width: 500px">
           <el-form-item label="自动打印">
             <el-switch v-model="receiptForm.enabled" />
           </el-form-item>
@@ -119,7 +125,7 @@ async function savePwd() {
       </el-tab-pane>
 
       <el-tab-pane label="修改密码" name="password">
-        <el-form ref="pwdFormRef" :model="pwdForm" label-width="100px" style="max-width:460px">
+        <el-form ref="pwdFormRef" :model="pwdForm" label-width="100px" style="max-width: 460px">
           <el-form-item label="原密码">
             <el-input v-model="pwdForm.oldPwd" type="password" show-password />
           </el-form-item>

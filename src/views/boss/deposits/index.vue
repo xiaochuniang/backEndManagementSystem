@@ -27,13 +27,31 @@ const rules = ref<DepositRule[]>([
 ])
 
 const records = ref<DepositRecord[]>([
-  { id: 1, phone: '138****0001', amount: 300, gift: 50, time: '2026-04-15 14:20', operator: '张员工' },
-  { id: 2, phone: '139****0002', amount: 500, gift: 100, time: '2026-04-14 10:00', operator: '李员工' },
+  {
+    id: 1,
+    phone: '138****0001',
+    amount: 300,
+    gift: 50,
+    time: '2026-04-15 14:20',
+    operator: '张员工',
+  },
+  {
+    id: 2,
+    phone: '139****0002',
+    amount: 500,
+    gift: 100,
+    time: '2026-04-14 10:00',
+    operator: '李员工',
+  },
 ])
 
 const dialogVisible = ref(false)
 const dialogTitle = ref('添加规则')
-const ruleForm = reactive<Omit<DepositRule, 'id'> & { id?: number }>({ amount: 0, gift: 0, remark: '' })
+const ruleForm = reactive<Omit<DepositRule, 'id'> & { id?: number }>({
+  amount: 0,
+  gift: 0,
+  remark: '',
+})
 const ruleFormRef = ref()
 const ruleRules = {
   amount: [{ required: true, message: '请输入充值金额', trigger: 'blur' }],
@@ -72,7 +90,7 @@ async function deleteRule(row: DepositRule) {
   <div class="page">
     <el-tabs v-model="activeTab">
       <el-tab-pane label="储值规则" name="rules">
-        <div style="margin-bottom:12px">
+        <div style="margin-bottom: 12px">
           <el-button type="primary" :icon="Plus" @click="openAdd">添加规则</el-button>
         </div>
         <el-table :data="rules" border stripe>
@@ -86,7 +104,9 @@ async function deleteRule(row: DepositRule) {
           <el-table-column label="操作" width="140" fixed="right">
             <template #default="{ row }">
               <el-button size="small" :icon="Edit" @click="openEdit(row)">编辑</el-button>
-              <el-button size="small" type="danger" :icon="Delete" @click="deleteRule(row)">删除</el-button>
+              <el-button size="small" type="danger" :icon="Delete" @click="deleteRule(row)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -110,10 +130,10 @@ async function deleteRule(row: DepositRule) {
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="440px">
       <el-form ref="ruleFormRef" :model="ruleForm" :rules="ruleRules" label-width="100px">
         <el-form-item label="充值金额(元)" prop="amount">
-          <el-input-number v-model="ruleForm.amount" :min="0" style="width:100%" />
+          <el-input-number v-model="ruleForm.amount" :min="0" style="width: 100%" />
         </el-form-item>
         <el-form-item label="赠送金额(元)" prop="gift">
-          <el-input-number v-model="ruleForm.gift" :min="0" style="width:100%" />
+          <el-input-number v-model="ruleForm.gift" :min="0" style="width: 100%" />
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="ruleForm.remark" />

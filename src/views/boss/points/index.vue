@@ -31,9 +31,30 @@ function saveRules() {
 }
 
 const pointsRecords = ref<PointsRecord[]>([
-  { id: 1, phone: '138****0001', change: +78, type: '消费获取', remark: '订单SO20260410001', time: '2026-04-10 15:23' },
-  { id: 2, phone: '139****0002', change: -100, type: '积分兑换', remark: '兑换饮品券', time: '2026-04-08 10:00' },
-  { id: 3, phone: '136****0003', change: +45, type: '消费获取', remark: '订单SO20260407003', time: '2026-04-07 16:00' },
+  {
+    id: 1,
+    phone: '138****0001',
+    change: +78,
+    type: '消费获取',
+    remark: '订单SO20260410001',
+    time: '2026-04-10 15:23',
+  },
+  {
+    id: 2,
+    phone: '139****0002',
+    change: -100,
+    type: '积分兑换',
+    remark: '兑换饮品券',
+    time: '2026-04-08 10:00',
+  },
+  {
+    id: 3,
+    phone: '136****0003',
+    change: +45,
+    type: '消费获取',
+    remark: '订单SO20260407003',
+    time: '2026-04-07 16:00',
+  },
 ])
 
 const exchangeItems = ref<ExchangeItem[]>([
@@ -43,7 +64,11 @@ const exchangeItems = ref<ExchangeItem[]>([
 
 const exDialogVisible = ref(false)
 const exDialogTitle = ref('添加兑换商品')
-const exForm = reactive<Omit<ExchangeItem, 'id'> & { id?: number }>({ name: '', points: 0, stock: 0 })
+const exForm = reactive<Omit<ExchangeItem, 'id'> & { id?: number }>({
+  name: '',
+  points: 0,
+  stock: 0,
+})
 const exFormRef = ref()
 const exRules = {
   name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
@@ -82,15 +107,15 @@ async function deleteEx(row: ExchangeItem) {
   <div class="page">
     <el-tabs v-model="activeTab">
       <el-tab-pane label="积分规则" name="rules">
-        <el-card shadow="never" style="max-width:500px">
+        <el-card shadow="never" style="max-width: 500px">
           <el-form :model="pointsConfig" label-width="160px">
             <el-form-item label="消费1元获得积分">
               <el-input-number v-model="pointsConfig.earnRate" :min="0" :precision="1" />
-              <span style="margin-left:8px;color:#909399">积分</span>
+              <span style="margin-left: 8px; color: #909399">积分</span>
             </el-form-item>
             <el-form-item label="积分兑换比例">
               <el-input-number v-model="pointsConfig.redeemRate" :min="1" />
-              <span style="margin-left:8px;color:#909399">积分 = 1元</span>
+              <span style="margin-left: 8px; color: #909399">积分 = 1元</span>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="saveRules">保存规则</el-button>
@@ -104,7 +129,7 @@ async function deleteEx(row: ExchangeItem) {
           <el-table-column label="会员手机" prop="phone" />
           <el-table-column label="积分变动" width="100">
             <template #default="{ row }">
-              <span :style="{color: row.change>0?'#67c23a':'#f56c6c',fontWeight:600}">
+              <span :style="{ color: row.change > 0 ? '#67c23a' : '#f56c6c', fontWeight: 600 }">
                 {{ row.change > 0 ? '+' : '' }}{{ row.change }}
               </span>
             </template>
@@ -116,7 +141,7 @@ async function deleteEx(row: ExchangeItem) {
       </el-tab-pane>
 
       <el-tab-pane label="兑换商品" name="exchange">
-        <div style="margin-bottom:12px">
+        <div style="margin-bottom: 12px">
           <el-button type="primary" :icon="Plus" @click="openAddEx">添加兑换商品</el-button>
         </div>
         <el-table :data="exchangeItems" border stripe>
@@ -126,7 +151,9 @@ async function deleteEx(row: ExchangeItem) {
           <el-table-column label="操作" width="140" fixed="right">
             <template #default="{ row }">
               <el-button size="small" :icon="Edit" @click="openEditEx(row)">编辑</el-button>
-              <el-button size="small" type="danger" :icon="Delete" @click="deleteEx(row)">删除</el-button>
+              <el-button size="small" type="danger" :icon="Delete" @click="deleteEx(row)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -139,10 +166,10 @@ async function deleteEx(row: ExchangeItem) {
           <el-input v-model="exForm.name" />
         </el-form-item>
         <el-form-item label="所需积分" prop="points">
-          <el-input-number v-model="exForm.points" :min="0" style="width:100%" />
+          <el-input-number v-model="exForm.points" :min="0" style="width: 100%" />
         </el-form-item>
         <el-form-item label="库存">
-          <el-input-number v-model="exForm.stock" :min="0" style="width:100%" />
+          <el-input-number v-model="exForm.stock" :min="0" style="width: 100%" />
         </el-form-item>
       </el-form>
       <template #footer>
