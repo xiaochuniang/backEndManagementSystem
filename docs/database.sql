@@ -458,7 +458,57 @@ CREATE TABLE IF NOT EXISTS sms_verify_code (
 
 
 -- ===========================================================
--- 初始化基础数据
+-- 十一、优惠券相关表（顾客小程序端）
+-- ===========================================================
+
+-- -------------------------------------------------------------
+-- 26. 优惠券模板表（店铺配置的券种）
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS coupon_template (
+  id           BIGINT       UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+  name         VARCHAR(64)  NOT NULL                        COMMENT '券名称',
+  type         TINYINT(1)   NOT NULL                        COMMENT '券类型：1=满减  2=折扣  3=免费赠品',
+  value        DECIMAL(10,2) NOT NULL DEFAULT 0.00          COMMENT '优惠值：满减金额（元）或折扣率（如 0.9=9折）',
+  min_amount   DECIMAL(10,2) NOT NULL DEFAULT 0.00          COMMENT '最低消费金额（元），0=无门槛',
+  total_count  INT           NOT NULL DEFAULT 0             COMMENT '总发放数量，0=不限',
+  remain_count INT           NOT NULL DEFAULT 0             COMMENT '剩余可领数量',
+  start_time   DATETIME      NOT NULL                       COMMENT '活动开始时间',
+  end_time     DATETIME      NOT NULL                       COMMENT '活动结束时间',
+  valid_days   INT           NOT NULL DEFAULT 30            COMMENT '领取后有效天数',
+  description  VARCHAR(256)           DEFAULT ''            COMMENT '券说明/使用须知',
+  status       TINYINT(1)   NOT NULL DEFAULT 1              COMMENT '状态：0=停用  1=启用',
+  create_time  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_time  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_status (status),
+  KEY idx_end_time (end_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='优惠券模板表';
+
+-- -------------------------------------------------------------
+-- 27. 会员持券表（会员领取/获得的优惠券实例）
+-- -------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS member_coupon (
+  id           BIGINT       UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+  member_id    BIGINT       UNSIGNED NOT NULL               COMMENT '会员 ID（member.id）',
+  template_id  BIGINT       UNSIGNED NOT NULL               COMMENT '优惠券模板 ID（coupon_template.id）',
+  coupon_name  VARCHAR(64)  NOT NULL                        COMMENT '券名称快照',
+  type         TINYINT(1)   NOT NULL                        COMMENT '券类型快照',
+  value        DECIMAL(10,2) NOT NULL DEFAULT 0.00          COMMENT '优惠值快照',
+  min_amount   DECIMAL(10,2) NOT NULL DEFAULT 0.00          COMMENT '使用门槛快照',
+  expire_time  DATETIME     NOT NULL                        COMMENT '过期时间',
+  status       TINYINT(1)   NOT NULL DEFAULT 0              COMMENT '状态：0=未使用  1=已使用  2=已过期',
+  order_id     BIGINT       UNSIGNED             DEFAULT NULL COMMENT '核销订单 ID（shop_order.id）',
+  used_time    DATETIME                          DEFAULT NULL COMMENT '使用时间',
+  receive_time DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '领取时间',
+  PRIMARY KEY (id),
+  KEY idx_member (member_id),
+  KEY idx_template (template_id),
+  KEY idx_status (status),
+  KEY idx_expire_time (expire_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员持券表';
+
+
+-- ===========================================================
 -- ===========================================================
 
 -- 默认会员等级
@@ -489,4 +539,12 @@ INSERT INTO sys_role (id, name, code, description, status) VALUES
   (2, '老板',       'boss',        '老板端管理权限', 1),
   (3, '员工',       'staff',       '员工端操作权限', 1),
   (4, '顾客运营',   'customer_ops','顾客端运营权限', 1)
+ON DUPLICATE KEY UPDATE update_time = NOW();
+
+-- 默认优惠券模板示例
+INSERT INTO coupon_template (id, name, type, value, min_amount, total_count, remain_count, start_time, end_time, valid_days, description, status) VALUES
+  (1, '新人优惠券',  1, 10.00, 30.00,  1000, 980, '2026-01-01 00:00:00', '2026-12-31 23:59:59', 30, '新用户注册赠送，满30元可用', 1),
+  (2, '春季特惠券',  1,  8.00, 50.00,  500,  420, '2026-04-01 00:00:00', '2026-04-30 23:59:59', 30, '春季活动专属，满50元减8元', 1),
+  (3, '会员9折券',   2,  0.90,  0.00,  200,  150, '2026-01-01 00:00:00', '2026-12-31 23:59:59', 60, '会员专享9折优惠，无消费门槛', 1),
+  (4, '下午茶8折券', 2,  0.80,  0.00,  300,  280, '2026-04-01 00:00:00', '2026-05-15 23:59:59', 45, '下午2-5点使用，全场8折', 1)
 ON DUPLICATE KEY UPDATE update_time = NOW();
