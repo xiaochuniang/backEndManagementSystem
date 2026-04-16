@@ -19,6 +19,7 @@ export interface PageParams {
 export interface LoginParams {
   username: string
   password: string
+  role: 'boss' | 'staff' | 'customerOps'
 }
 
 export interface LoginResult {

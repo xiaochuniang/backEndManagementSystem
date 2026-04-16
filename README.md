@@ -1,111 +1,79 @@
-# Vue3 Admin System
+# 门店收银 + 会员储值工程骨架（Monorepo）
 
-基于 Vue 3.4 + TypeScript + Vite + Element Plus + Pinia + Vue Router 4 的后台管理系统。
-
-## 技术栈
-
-- **Vue 3.4** — Composition API + `<script setup>`
-- **TypeScript** — 全项目类型安全，无 any
-- **Vite 5** — 快速构建工具
-- **Element Plus** — 按需引入（unplugin-vue-components + unplugin-auto-import）
-- **Pinia** — 状态管理
-- **Vue Router 4** — 动态路由 + 菜单权限控制
-- **Axios** — 统一封装，请求/响应拦截、错误处理、token 注入、取消请求
-- **Mock 数据** — 自定义 Vite 插件，无需真实后端即可运行
-
-## 功能
-
-- ✅ 登录页（账号密码登录，Mock 接口）
-- ✅ Layout 布局（侧边栏 + 顶部导航 + 多标签页）
-- ✅ 动态路由、菜单权限控制（根据用户角色动态生成路由和菜单）
-- ✅ 按钮权限指令 `v-permission`（支持 string / string[]）
-- ✅ Axios 封装（请求/响应拦截、统一错误提示、取消请求、泛型返回体）
-- ✅ Pinia 状态管理（用户模块 + 应用配置模块）
-- ✅ 工具函数（dayjs 时间格式化、防抖、节流）
-- ✅ 示例页面：Dashboard、用户管理、角色管理、菜单管理
-- ✅ 完整 TypeScript 类型定义
-- ✅ ESLint + Prettier 代码规范
-
-## 安装与启动
-
-```bash
-# 安装依赖
-pnpm install
-
-# 启动开发服务器
-pnpm dev
-
-# 构建生产版本
-pnpm build
-
-# 预览生产版本
-pnpm preview
-
-# 代码检查
-pnpm lint
-
-# 代码格式化
-pnpm format
-```
-
-## 测试账号
-
-| 角色 | 用户名 | 密码 | 说明 |
-|------|--------|------|------|
-| 管理员 | admin | admin123 | 拥有所有权限，可见所有菜单和按钮 |
-| 编辑员 | editor | editor123 | 仅有查看权限，部分按钮不可见 |
-
-## 权限说明
-
-### 菜单权限
-- 登录后根据角色获取对应的菜单树
-- 动态生成路由，未授权的菜单不可见且不可访问
-- `admin` 角色可访问所有页面
-- `editor` 角色仅可访问首页和用户管理页面
-
-### 按钮权限
-- 使用 `v-permission` 指令控制按钮显示
-- 支持传入单个权限字符串或权限字符串数组
-- 示例：`v-permission="'system:user:create'"` 或 `v-permission="['system:user:create', 'system:user:update']"`
-- `admin` 角色拥有增删改查所有按钮
-- `editor` 角色只有查看权限，新增/编辑/删除按钮不可见
+基于 `Vue3 + TypeScript + Vite + Element Plus + Pinia + Vue Router` 的后台管理端，并在同仓库新增 `uni-app` 顾客小程序端，使用 `pnpm workspace` 组织。
 
 ## 项目结构
 
-```
-src/
-├── api/            # 接口封装（Axios 请求函数）
-├── assets/         # 静态资源
-├── components/     # 公共组件
-├── directives/     # 自定义指令（v-permission）
-├── hooks/          # 常用 Hooks
-├── layout/         # 布局组件（侧边栏 + 顶部 + 标签页）
-├── router/         # 路由配置（动态路由 + 路由守卫）
-├── store/          # Pinia 状态管理
-├── styles/         # 全局样式
-├── types/          # TypeScript 类型定义
-├── utils/          # 工具函数
-├── views/          # 页面组件
-├── App.vue         # 根组件
-└── main.ts         # 入口文件
+```text
+.
+├─ apps/
+│  └─ miniapp-uni/              # uni-app 小程序端（Vue3 + TS）
+├─ mock/                        # admin mock API
+├─ src/                         # admin web 源码
+│  ├─ layout/
+│  ├─ router/
+│  ├─ store/
+│  └─ views/
+│     ├─ boss/                  # 老板端
+│     ├─ staff/                 # 员工端
+│     └─ customer-ops/          # 顾客小程序后台运营端
+├─ package.json                 # root + admin web scripts
+└─ pnpm-workspace.yaml          # workspace 配置
 ```
 
-## Mock 数据
+## 后台管理端信息架构
 
-项目使用自定义 Vite 插件实现 Mock 数据，无需真实后端：
-- `/api/auth/login` — 登录接口
-- `/api/auth/userinfo` — 获取用户信息、权限、菜单
-- `/api/auth/logout` — 退出登录
-- `/api/user/list` — 用户列表（分页 + 搜索）
-- `/api/user/create` — 新增用户
-- `/api/user/update` — 更新用户
-- `/api/user/delete/:id` — 删除用户
-- `/api/role/list` — 角色列表
-- `/api/role/all` — 所有角色
-- `/api/role/create` — 新增角色
-- `/api/role/update` — 更新角色
-- `/api/role/delete/:id` — 删除角色
-- `/api/menu/tree` — 菜单树
-- `/api/menu/create` — 新增菜单
-- `/api/menu/update` — 更新菜单
-- `/api/menu/delete/:id` — 删除菜单
+- 老板端：`/boss/*`
+  - Dashboard、收银、会员储值、门店管理、经营报表
+- 员工端：`/staff/*`
+  - Dashboard、收银、会员储值、订单列表
+- 顾客小程序后台运营端：`/customer-ops/*`
+  - Dashboard、小程序配置、会员运营、订单列表
+
+登录页支持端切换（`boss / staff / customerOps`），并通过 mock 用户角色返回对应动态菜单路由。
+
+## 安装与运行
+
+> Node.js 18+，并启用 pnpm（可用 `corepack enable`）
+
+```bash
+pnpm install
+```
+
+### 启动后台管理端（admin web）
+
+```bash
+pnpm dev:admin
+```
+
+### 启动 uni-app（H5 预览）
+
+```bash
+pnpm dev:miniapp
+```
+
+### 构建
+
+```bash
+pnpm build:admin
+pnpm build:miniapp
+```
+
+## uni-app 端说明
+
+- 目录：`apps/miniapp-uni`
+- 页面：
+  - `pages/index/index` 首页（余额 + 储值入口）
+  - `pages/member/index` 会员中心
+  - `pages/recharge/index` 充值页
+  - `pages/orders/index` 订单列表
+- 当前使用本地 mock 数据（`apps/miniapp-uni/src/mock/member.ts`），后续可替换为真实接口。
+- 如需小程序真机调试：可继续使用 `dev:mp-weixin` / `build:mp-weixin`，或用 HBuilderX 打开 `apps/miniapp-uni`。
+
+## 后台 mock 测试账号
+
+| 端 | 用户名 | 密码 |
+|---|---|---|
+| 老板端 | boss | boss123 |
+| 员工端 | staff | staff123 |
+| 顾客运营端 | customer | customer123 |

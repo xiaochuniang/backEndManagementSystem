@@ -1,4 +1,5 @@
-import { debounce, throttle } from 'lodash-es'
+import { debounce } from './debounce'
+import { throttle } from './throttle'
 
 /**
  * 防抖函数
@@ -26,16 +27,18 @@ export function useThrottle<T extends (...args: unknown[]) => unknown>(
 export function deepClone<T>(obj: T): T {
   if (obj === null || typeof obj !== 'object') return obj
 
-  const clone: Record<string, unknown> = Array.isArray(obj) ? [] : {}
+  const clone = (Array.isArray(obj) ? [] : {}) as T
+  const source = obj as Record<string, unknown>
+  const target = clone as Record<string, unknown>
 
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const value = obj[key]
-      clone[key] = value && typeof value === 'object' ? deepClone(value) : value
+  for (const key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      const value = source[key]
+      target[key] = value && typeof value === 'object' ? deepClone(value) : value
     }
   }
 
-  return clone as T
+  return clone
 }
 
 /**
